@@ -1,0 +1,17 @@
+# MeetAI is a local desktop application - it is not deployed anywhere.
+# This file exists only as a convenient way to run the local MongoDB it needs.
+#
+#   docker compose up -d mongo
+#
+services:
+  mongo:
+    image: mongo:7
+    container_name: meetai-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:

@@ -1,0 +1,9 @@
+{
+  "name": "MeetAI - Gemini Summary",
+  "nodes": [
+    { "parameters": { "path": "meetai-summarize", "httpMethod": "POST", "responseMode": "lastNode" }, "name": "Transcript Webhook", "type": "n8n-nodes-base.webhook", "typeVersion": 2, "position": [0, 0] },
+    { "parameters": { "method": "POST", "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key={{$env.GEMINI_API_KEY}}", "sendBody": true, "specifyBody": "json", "jsonBody": "={\"contents\":[{\"parts\":[{\"text\":\"Summarize this meeting and return JSON with summary, importantTopics, actionItems, deadlines, keyDecisions, sentiment, priority: {{$json.transcript}}\"}]}]}" }, "name": "Gemini AI", "type": "n8n-nodes-base.httpRequest", "typeVersion": 4, "position": [260, 0] },
+    { "parameters": { "method": "PATCH", "url": "={{$env.MEETAI_API_URL}}/api/v1/meetings/{{$json.meetingId}}/summary", "sendBody": true, "specifyBody": "json", "jsonBody": "={{$json}}" }, "name": "Update MongoDB", "type": "n8n-nodes-base.httpRequest", "typeVersion": 4, "position": [520, 0] }
+  ],
+  "connections": { "Transcript Webhook": { "main": [[{ "node": "Gemini AI", "type": "main", "index": 0 }]] }, "Gemini AI": { "main": [[{ "node": "Update MongoDB", "type": "main", "index": 0 }]] } }
+}

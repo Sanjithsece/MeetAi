@@ -1,0 +1,8 @@
+{
+  "name": "MeetAI - Notifications",
+  "nodes": [
+    { "parameters": { "path": "meetai-notify", "httpMethod": "POST", "responseMode": "lastNode" }, "name": "Notification Webhook", "type": "n8n-nodes-base.webhook", "typeVersion": 2, "position": [0, 0] },
+    { "parameters": { "fromEmail": "={{$env.NOTIFY_FROM_EMAIL}}", "toEmail": "={{$json.email}}", "subject": "={{$json.title}}", "text": "={{$json.message}}" }, "name": "Send Notification", "type": "n8n-nodes-base.emailSend", "typeVersion": 2, "position": [260, 0] }
+  ],
+  "connections": { "Notification Webhook": { "main": [[{ "node": "Send Notification", "type": "main", "index": 0 }]] } }
+}

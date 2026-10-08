@@ -1,0 +1,8 @@
+{
+  "name": "MeetAI - Notion Sync",
+  "nodes": [
+    { "parameters": { "path": "meetai-notion", "httpMethod": "POST", "responseMode": "lastNode" }, "name": "Summary Webhook", "type": "n8n-nodes-base.webhook", "typeVersion": 2, "position": [0, 0] },
+    { "parameters": { "resource": "databasePage", "operation": "create", "databaseId": "={{$env.NOTION_MEETINGS_DATABASE_ID}}", "title": "={{$json.title}}" }, "name": "Create Notion Page", "type": "n8n-nodes-base.notion", "typeVersion": 2, "position": [260, 0] }
+  ],
+  "connections": { "Summary Webhook": { "main": [[{ "node": "Create Notion Page", "type": "main", "index": 0 }]] } }
+}

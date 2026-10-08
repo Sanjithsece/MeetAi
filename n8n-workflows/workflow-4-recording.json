@@ -1,0 +1,8 @@
+{
+  "name": "MeetAI - Recording",
+  "nodes": [
+    { "parameters": { "path": "meetai-recording", "httpMethod": "POST", "responseMode": "lastNode" }, "name": "Recording Webhook", "type": "n8n-nodes-base.webhook", "typeVersion": 2, "position": [0, 0] },
+    { "parameters": { "method": "PATCH", "url": "={{$env.MEETAI_API_URL}}/api/v1/meetings/{{$json.meetingId}}", "sendBody": true, "specifyBody": "json", "jsonBody": "={\"recordingPath\":\"{{$json.recordingPath}}\",\"status\":\"COMPLETED\"}" }, "name": "Save Recording Path", "type": "n8n-nodes-base.httpRequest", "typeVersion": 4, "position": [260, 0] }
+  ],
+  "connections": { "Recording Webhook": { "main": [[{ "node": "Save Recording Path", "type": "main", "index": 0 }]] } }
+}

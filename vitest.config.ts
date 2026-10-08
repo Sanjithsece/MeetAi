@@ -1,0 +1,12 @@
+import { defineConfig } from "vitest/config";
+
+export default defineConfig({
+  test: {
+    environment: "node",
+    include: ["server/tests/**/*.test.js"],
+    // Database-backed tests share one mongoose connection, so keep them serial.
+    fileParallelism: false,
+    testTimeout: 30000,
+    hookTimeout: 30000
+  }
+});

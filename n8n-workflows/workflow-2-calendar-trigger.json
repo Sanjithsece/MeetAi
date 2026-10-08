@@ -1,0 +1,9 @@
+{
+  "name": "MeetAI - Calendar Trigger",
+  "nodes": [
+    { "parameters": { "pollTimes": { "item": [{ "mode": "everyMinute" }] }, "calendarId": "primary" }, "name": "Google Calendar Trigger", "type": "n8n-nodes-base.googleCalendarTrigger", "typeVersion": 1, "position": [0, 0] },
+    { "parameters": { "jsCode": "return [{ json: { title: $json.summary, description: $json.description, meetingLink: $json.hangoutLink || $json.location, source: 'GOOGLE_CALENDAR', scheduledStart: $json.start?.dateTime || $json.start?.date, scheduledEnd: $json.end?.dateTime || $json.end?.date, platform: ($json.hangoutLink || '').includes('meet.google.com') ? 'GOOGLE_MEET' : 'MANUAL' } }];" }, "name": "Normalize Event", "type": "n8n-nodes-base.code", "typeVersion": 2, "position": [260, 0] },
+    { "parameters": { "method": "POST", "url": "={{$env.MEETAI_API_URL}}/api/v1/workflows/ingest-meeting", "sendBody": true, "specifyBody": "json", "jsonBody": "={{$json}}" }, "name": "Store Meeting", "type": "n8n-nodes-base.httpRequest", "typeVersion": 4, "position": [520, 0] }
+  ],
+  "connections": { "Google Calendar Trigger": { "main": [[{ "node": "Normalize Event", "type": "main", "index": 0 }]] }, "Normalize Event": { "main": [[{ "node": "Store Meeting", "type": "main", "index": 0 }]] } }
+}
